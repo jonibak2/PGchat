@@ -5,137 +5,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Хаб PG78</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      font-family: sans-serif;
       background: url('bg.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: white;
-      margin: 0;
-      padding: 2rem;
-      text-align: center;
-      height: 100vh;
+      min-height: 100vh;
       overflow-x: hidden;
     }
 
-    h1 {
-      margin-bottom: 2rem;
-      text-shadow: 0 0 10px black;
-    }
-
-    .links {
-      display: grid;
-      gap: 1rem;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .link-card {
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 12px;
-      padding: 1rem;
-      text-decoration: none;
-      color: white;
-      transition: transform 0.2s;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    }
-
-    .link-card:hover {
-      transform: scale(1.03);
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .link-card span {
-      font-size: 1.25rem;
-      font-weight: bold;
-    }
-
-    .disabled {
-      opacity: 0.5;
-      pointer-events: none;
-      background: rgba(0, 0, 0, 0.4);
-    }
-
-    .split-container {
-      display: flex;
-      gap: 1rem;
-      width: 100%;
-      justify-content: center;
-    }
-
-    .split-container .link-card {
-      flex: 1;
-      margin: 0;
-    }
-
-    .single-card-container {
-      display: flex;
-      justify-content: center;
-    }
-
-    .single-card-container .link-card {
-      flex: none;
-      width: 50%;
-    }
-
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #ccc;
-      text-shadow: 0 0 5px black;
-    }
-
     .moon-phase {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-      cursor: pointer;
-      transition: transform 0.2s;
-      display: inline-block;
+      transition: transform 0.2s ease-in-out;
     }
 
     .moon-phase:hover {
       transform: scale(1.1);
     }
 
-    .header-top {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      z-index: 1;
+    .link-card {
+      transition: all 0.2s ease-in-out;
+    }
+
+    .link-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.15);
     }
 
     .github-link {
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      text-decoration: none;
-      font-size: 1rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-      transition: transform 0.2s;
+      transition: all 0.2s ease-in-out;
     }
 
     .github-link:hover {
-      transform: scale(1.03);
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .alpha-test {
-      font-size: 0.8rem;
-      color: #bbb;
-      text-shadow: 0 0 5px black;
-      margin-top: 0.5rem;
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.15);
     }
 
     .video-button {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-      z-index: 1000;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .video-button:hover {
+      opacity: 0.8;
     }
 
     .video-overlay {
@@ -145,8 +55,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: black;
-      z-index: 2000;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 50;
     }
 
     .video-overlay video {
@@ -155,204 +65,62 @@
       object-fit: contain;
     }
 
-    .ps-dragoman {
-      position: fixed;
-      bottom: 1rem;
-      left: 1rem;
-      font-size: 0.9rem;
-      color: #ccc;
-      text-shadow: 0 0 5px black;
-      z-index: 1000;
-    }
-
-    .ps-dragoman a {
-      color: #ccc;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
     .ps-dragoman a:hover {
-      color: #fff;
+      color: #60a5fa;
       text-decoration: underline;
-    }
-
-    /* Стили для чата */
-    .chat-container {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      width: 300px;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 12px;
-      padding: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-      z-index: 1000;
-    }
-
-    #chat {
-      border: 1px solid #ccc;
-      padding: 10px;
-      height: 200px;
-      overflow-y: auto;
-      margin-bottom: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      border-radius: 8px;
-    }
-
-    #msg {
-      width: 70%;
-      padding: 5px;
-      border-radius: 5px;
-      border: none;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-    }
-
-    #send {
-      width: 25%;
-      padding: 5px;
-      border-radius: 5px;
-      border: none;
-      background: rgba(255, 255, 255, 0.3);
-      color: white;
-      cursor: pointer;
-    }
-
-    #send:hover {
-      background: rgba(255, 255, 255, 0.5);
-    }
-
-    .msg {
-      margin: 5px 0;
-      word-wrap: break-word;
-    }
-
-    .msg strong {
-      color: #ffd700;
     }
   </style>
 </head>
-<body>
-  <div class="header-top">
-    <a href="https://github.com/jonibak2" class="github-link">Мой GitHub</a>
+<body class="font-sans text-white flex flex-col items-center justify-between py-8 px-4">
+  <div class="absolute top-4 right-4 z-10">
+    <a href="https://github.com/jonibak2" class="github-link bg-black bg-opacity-70 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-medium">Мой GitHub</a>
   </div>
 
-  <!-- Чат -->
-  <div class="chat-container">
-    <div id="chat"></div>
-    <input type="text" id="msg" placeholder="Введите сообщение..." />
-    <button id="send">Отправить</button>
-  </div>
+  <div class="text-5xl moon-phase cursor-pointer mb-6" id="moonPhase"></div>
+  <h1 class="text-4xl md:text-5xl font-bold mb-10 text-shadow-lg">🧭 Хаб PG78</h1>
 
-  <div class="moon-phase" id="moonPhase"></div>
-  <h1>🧭 Хаб PG78</h1>
-  <div class="links">
-    <a class="link-card" href="https://jonibak2.github.io/birthday-calendar/">
-      <span>🎂 Календарь дней рождений</span>
-      <div>Следи за праздниками ПГшеров</div>
+  <div class="w-full max-w-lg grid gap-4">
+    <a class="link-card bg-black bg-opacity-70 rounded-xl p-4 shadow-lg" href="https://jonibak2.github.io/birthday-calendar/">
+      <span class="text-xl font-bold">🎂 Календарь дней рождений</span>
+      <div class="text-sm mt-1">Следи за праздниками ПГшеров</div>
     </a>
-    
-    <div class="split-container">
-      <a class="link-card" href="https://jonibak2.github.io/PGA23/">
-        <span>🎇 PGA23</span>
-        <div>Номинации 2023</div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <a class="link-card bg-black bg-opacity-70 rounded-xl p-4 shadow-lg" href="https://jonibak2.github.io/PGA23/">
+        <span class="text-xl font-bold">🎇 PGA23</span>
+        <div class="text-sm mt-1">Номинации 2023</div>
       </a>
-      <a class="link-card" href="https://jonibak2.github.io/PGA24/">
-        <span>🩸 PGA24</span>
-        <div>Номинации 2024</div>
+      <a class="link-card bg-black bg-opacity-70 rounded-xl p-4 shadow-lg" href="https://jonibak2.github.io/PGA24/">
+        <span class="text-xl font-bold">🩸 PGA24</span>
+        <div class="text-sm mt-1">Номинации 2024</div>
       </a>
     </div>
 
-    <div class="single-card-container">
-      <a class="link-card" href="https://jonibak2.github.io/PGA25/">
-        <span>💛 PGA25</span>
-        <div>Номинации 2025</div>
+    <div class="flex justify-center">
+      <a class="link-card bg-black bg-opacity-70 rounded-xl p-4 shadow-lg w-full md:w-1/2" href="https://jonibak2.github.io/PGA25/">
+        <span class="text-xl font-bold">💛 PGA25</span>
+        <div class="text-sm mt-1">Номинации 2025</div>
       </a>
     </div>
   </div>
-  <footer>
+
+  <footer class="mt-12 text-sm text-gray-400">
     © PG78
-    <div class="alpha-test">идите нахуй что это за попки</div>
+    <div class="alpha-test text-xs mt-2">идите нахуй что это за попки</div>
   </footer>
 
-  <img src="lo.png" class="video-button" id="videoButton">
+  <img src="lo.png" class="video-button fixed bottom-4 right-4 w-6 h-6 cursor-pointer z-50" id="videoButton">
   <div class="video-overlay" id="videoOverlay">
     <video id="loloVideo" controls>
       <source src="lolo.mp4" type="video/mp4">
     </video>
   </div>
 
-  <div class="ps-dragoman">
+  <div class="ps-dragoman fixed bottom-4 left-4 text-sm text-gray-400 z-50">
     <a href="https://rule34.xxx/index.php?page=post&s=list&tags=double_penetration+-ai_generated+" target="_blank">P.s для драгомана</a>
   </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
-
   <script>
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyD6yrRs9vnH-YG1LyoUL_Nx4zCltXSG_Ic",
-      authDomain: "pgtest78.firebaseapp.com",
-      projectId: "pgtest78",
-      storageBucket: "pgtest78.firebasestorage.app",
-      messagingSenderId: "776055100451",
-      appId: "1:776055100451:web:9fc6cda8cbb315e48b4d96",
-      measurementId: "G-49YZYMQ9C9"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    const chatDiv = document.getElementById('chat');
-    const msgInput = document.getElementById('msg');
-    const sendBtn = document.getElementById('send');
-
-    // Храним ник пользователя в localStorage
-    let nickname = localStorage.getItem('nickname');
-
-    sendBtn.onclick = async () => {
-      const text = msgInput.value.trim();
-      if (!text) return;
-
-      if (!nickname) {
-        // Запрашиваем ник, если его нет
-        nickname = prompt('Введите ваш ник:');
-        if (!nickname || nickname.trim() === '') {
-          alert('Ник обязателен!');
-          return;
-        }
-        nickname = nickname.trim();
-        localStorage.setItem('nickname', nickname);
-      }
-
-      await db.collection('messages').add({
-        text,
-        nickname,
-        timestamp: Date.now()
-      });
-      msgInput.value = '';
-    };
-
-    // Отображаем сообщения
-    db.collection('messages')
-      .orderBy('timestamp')
-      .onSnapshot(snapshot => {
-        chatDiv.innerHTML = '';
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const p = document.createElement('div');
-          p.className = 'msg';
-          p.innerHTML = `<strong>${data.nickname}:</strong> ${data.text}`;
-          chatDiv.appendChild(p);
-        });
-        chatDiv.scrollTop = chatDiv.scrollHeight;
-      });
-
-    // Логика для фаз луны
     function getMoonPhase(date) {
       const year = date.getFullYear();
       const month = date.getMonth() + 1;
