@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Админ-панель PG78</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #1e1e1e;
+      color: white;
+      padding: 2rem;
+    }
+    label, select, input, button {
+      display: block;
+      margin: 1rem auto;
+      font-size: 1rem;
+    }
+    select, input {
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background: #ff6b6b;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    pre {
+      background: #2a2a2a;
+      padding: 1rem;
+      border-radius: 10px;
+      color: #00ff88;
+      max-width: 600px;
+      margin: 2rem auto;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎩 Админ-панель PG78</h1>
+
+  <label for="user">Выбери пользователя:</label>
+  <select id="user">
+    <option value="eristorem">Эристором</option>
+    <option value="morinok">Моринок</option>
+    <option value="homa">Хома</option>
+    <option value="modie78">Моди</option>
+    <option value="pashok">Пашок</option>
+    <option value="end">Энд</option>
+    <option value="anya">Аня</option>
+    <option value="stasik">Стасик</option>
+    <option value="nika">Ника</option>
+    <option value="kostya">Костя</option>
+    <option value="erzhan">Ержан</option>
+    <option value="dragoman">Драгоман</option>
+    <option value="andrew">Андрей</option>
+    <option value="jonibak2">Жанибек</option>
+  </select>
+
+  <label for="badge">Выбери значок для выдачи:</label>
+  <select id="badge">
+    <option value="🐸">🐸 Мем-мастер</option>
+    <option value="🧨">🧨 Откатер</option>
+    <option value="🏆">🏆 Победитель номинации</option>
+    <option value="👶">👶 Бейби</option>
+    <option value="👴">👴 Старейшина</option>
+  </select>
+
+  <button onclick="generateJson()">Выдать значок</button>
+
+  <pre id="result">// сюда скопируй новый JSON и вставь в профиль</pre>
+
+  <script>
+    function generateJson() {
+      const user = document.getElementById('user').value;
+      const badge = document.getElementById('badge').value;
+
+      fetch(`profiles/${user}.json`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.badges.includes(badge)) {
+            data.badges.push(badge);
+          }
+          document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(() => {
+          document.getElementById('result').textContent = '// Ошибка загрузки профиля';
+        });
+    }
+  </script>
+</body>
+</html>
